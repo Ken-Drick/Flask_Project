@@ -56,7 +56,7 @@ def get_UserHist_by_movie(id):
         jsonify({"movieId": id, "count": len(data), "title": data}), 200
     )
     
-    @app.route("/movies", methods=["POST"])
+@app.route("/movies", methods=["POST"])
 def add_movie():
     cur = mysql.connection.cursor()
     info = request.get_json()
