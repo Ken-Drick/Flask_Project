@@ -55,7 +55,8 @@ def get_UserHist_by_movie(id):
     return make_response(
         jsonify({"movieId": id, "count": len(data), "title": data}), 200
     )
-    
+
+
 @app.route("/movies", methods=["POST"])
 def add_movie():
     cur = mysql.connection.cursor()
@@ -96,49 +97,23 @@ def update_movie(id):
             {"message": "The movie was updated successfully", "rows_affected": rows_affected}
         ),
         200,
-    )@app.route("/movies", methods=["POST"])
-def add_movie():
-    cur = mysql.connection.cursor()
-    info = request.get_json()
-    title = info["title"]
-    genre = info["genres"]
-    cur.execute(
-        """ INSERT IGNORE INTO movies (title, genres) VALUE (%s, %s)""",
-        (title, genre),
     )
-    mysql.connection.commit()
-    print("row(s) affected :{}".format(cur.rowcount))
-    rows_affected = cur.rowcount
-    cur.close()
-    return make_response(
-        jsonify(
-            {"message": "the movie was added successfully", "rows_affected": rows_affected}
-        ),
-        201,
-    )
-    
 
 
-@app.route("/movies/<int:id>", methods=["PUT"])
-def update_movie(id):
+@app.route("/movies/<int:id>", methods=["DELETE"])
+def delete_movie(id):
     cur = mysql.connection.cursor()
-    info = request.get_json()
-    title = info["title"]
-    genre = info["genres"]
-    cur.execute(
-        """ UPDATE movies SET title = %s, genres = %s WHERE movieId = %s """,
-        (title, genre, id),
-    )
+    cur.execute(""" DELETE FROM movies where movieId = %s """, (id,))
     mysql.connection.commit()
     rows_affected = cur.rowcount
     cur.close()
     return make_response(
         jsonify(
-            {"message": "The movie was updated successfully", "rows_affected": rows_affected}
+            {"message": "The movie was deleted successfully", "rows_affected": rows_affected}
         ),
         200,
     )
-    
+
 @app.route("/movies/format", methods=["GET"])
 def get_params():
     fmt = request.args.get('id')
