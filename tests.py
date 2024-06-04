@@ -54,7 +54,7 @@ class MyAppTests(unittest.TestCase):
 
 #TEST DELETE
     def test_delete_movie(self):
-        movieId = 638  
+        movieId = 650
         response = self.app.delete(f"/movies/{movieId}")
         self.assertEqual(response.status_code, 200)
         self.assertTrue("The movie was deleted successfully" in response.data.decode())
